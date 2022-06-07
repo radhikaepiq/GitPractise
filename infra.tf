@@ -1,50 +1,12 @@
-resource "aws_vpc" "vpc_rad" {
-  cidr_block       = "172.30.12.0/24"
-  instance_tenancy = "default"
-  tags = {
-    Name = "VPC-demo_rad"
-    Purpose = "terrafrom using Jenkins"
+resource "aws_spot_instance_request" "test_rad" {
+  ami                    = "ami-079b5e5b3971bd10d"
+  spot_price             = "0.016"
+  instance_type          = "t2.micro"
+  spot_type              = "one-time"
+  block_duration_minutes = "120"
+  wait_for_fulfillment   = "true"
+  key_name               = "SSHKEY_Rad"
+tags = {
+    Name = "radspotinst"
   }
-}
-
-resource "aws_subnet" "public_subnet" {
-
-vpc_id = aws_vpc.vpc_rad.id
-
-cidr_block ="172.30.12.0/25"
-
-map_public_ip_on_launch ="true"
-
-availability_zone = "ap-south-1a"
-
-
-
-tags = {
-
-    Name = "Public SubnetRN"
-
-}
-
-}
-
-
-
-resource "aws_subnet" "private_subnet" {
-
-vpc_id = aws_vpc.vpc_rad.id
-
-cidr_block ="172.30.12.128/25"
-
-map_public_ip_on_launch ="false"
-
-availability_zone = "ap-south-1a"
-
-
-
-tags = {
-
-    Name = "Private SubnetRK"
-
-}
-
 }
