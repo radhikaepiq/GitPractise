@@ -15,7 +15,7 @@ cidr_block ="172.30.12.0/25"
 
 map_public_ip_on_launch ="true"
 
-availability_zone = "ap-south-1"
+availability_zone = "ap-south-1a"
 
 
 
@@ -37,7 +37,7 @@ cidr_block ="172.30.12.128/25"
 
 map_public_ip_on_launch ="false"
 
-availability_zone = "ap-south-1"
+availability_zone = "ap-south-1a"
 
 
 
