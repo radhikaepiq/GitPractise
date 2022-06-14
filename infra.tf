@@ -131,9 +131,10 @@ resource "aws_spot_instance_request" "test_rad1" {
   spot_type              = "one-time"
   key_name               = "SSHKEY_Rad"
   # subnet_id              = aws_subnet.public_subnet.id
-   security_groups = ["${aws_security_group.RadSG_terraform.id}"]
+  security_groups = ["${aws_security_group.RadSG_terraform.id}"]
   subnet_id = "${aws_subnet.public_subnet.id}"
-
+  wait_for_fulfillment = true
+ 
 }
   
 #created instance using existing security group and private subnet
@@ -146,7 +147,15 @@ resource "aws_spot_instance_request" "test_rad2" {
   key_name               = "SSHKEY_Rad"
   # subnet_id                  = aws_subnet.private_subnet.id
   # security_groups        = aws_security_group.RadSG_terraform.id
-    security_groups = ["${aws_security_group.RadSG_terraform.id}"]
+  security_groups = ["${aws_security_group.RadSG_terraform.id}"]
   subnet_id = "${aws_subnet.private_subnet.id}"
+  wait_for_fulfillment = true
 }
-  
+  output "instance_ip_pub" {
+    value = aws_spot_instance_request.test_rad1.public_ip
+    
+  }
+ output "instance_ip_pvt" {
+value = aws_spot_instance_request.test_rad2.private_ip
+ }
+ 
