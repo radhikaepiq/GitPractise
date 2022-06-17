@@ -40,23 +40,23 @@ tags = {
 }
 
 # # CREATE Private SUBNET 
-# resource "aws_subnet" "private_subnet" {
+ resource "aws_subnet" "private_subnet" {
 
-# vpc_id = aws_vpc.vpc_rad.id
+ vpc_id = aws_vpc.vpc_rad.id
 
-# cidr_block ="172.30.12.128/25"
+ cidr_block ="172.30.12.128/25"
 
-# map_public_ip_on_launch ="false"
+ map_public_ip_on_launch ="false"
 
-# availability_zone = "ap-south-1a"
+ availability_zone = "ap-south-1a"
 
-# tags = {
+ tags = {
 
-#     Name = "Private SubnetRK"
+     Name = "Private SubnetRK"
 
-# }
+ }
 
-# }
+ }
 
 # /////IGW///////////////////
 resource "aws_internet_gateway" "Rad_IG" {
@@ -84,22 +84,22 @@ resource "aws_route" "route_public" {
 }
 
 # /////////////Custom route tabel and attach it to private subnet/////
-# resource "aws_route_table" "pvt_RT" {
-#   vpc_id = aws_vpc.vpc_rad.id
+ resource "aws_route_table" "pvt_RT" {
+   vpc_id = aws_vpc.vpc_rad.id
+   tags = {
+     Name ="Radpvt_RT"
+   }
+ }
 
-#   route {
-#     cidr_block = "10.0.1.0/25"
-#     gateway_id = aws_internet_gateway.Rad_IG.id
-#   }
-#   tags = {
-#     Name ="Radpvt_RT"
-#   }
-# }
-
-# resource "aws_route_table_association" "AssocRTpvt" {
-#   subnet_id      = aws_subnet.private_subnet.id
-#   route_table_id = aws_route_table.pvt_RT.id
-# }
+ resource "aws_route_table_association" "AssocRTpvt" {
+   subnet_id      = aws_subnet.private_subnet.id
+   route_table_id = aws_route_table.pvt_RT.id
+ }
+ resource "aws_route" "route_private" {
+  route_table_id              = aws_route_table.pvt_RT_RT.id
+  destination_cidr_block = "0.0.0.0/0"
+  gateway_id = aws_internet_gateway.Rad_IG.id
+}
 
 #########security group#########
 resource "aws_security_group" "RadSG_terraform" {
@@ -141,23 +141,22 @@ resource "aws_spot_instance_request" "rad_Server_pub" {
 
 # #Private subnet and instance 2
 
-#   resource "aws_spot_instance_request" "rad_Server_pvt" {
-
-#   ami = "ami-079b5e5b3971bd10d"
-#   spot_price             = "0.03"
-#   instance_type          = "t2.micro"
-#   spot_type              = "one-time"
-#   wait_for_fulfillment   = "true"
-#   subnet_id = aws_subnet.private_subnet.id
-#   key_name               = "SSHKEY_Rad"
-#   security_groups = [aws_security_group.RadSG_terraform.id]
-# }
+ resource "aws_spot_instance_request" "rad_Server_pvt" {
+ ami = "ami-079b5e5b3971bd10d"
+ spot_price             = "0.03"
+ instance_type          = "t2.micro"
+ spot_type              = "one-time"
+ wait_for_fulfillment   = "true"
+ subnet_id = aws_subnet.private_subnet.id
+ key_name               = "SSHKEY_Rad"
+ security_groups = [aws_security_group.RadSG_terraform.id]
+ }
 
   output "instance_ip_pub" {
     value = aws_spot_instance_request.rad_Server_pub.public_ip
     
   }
-#  output "instance_ip_pvt" {
-# value = aws_spot_instance_request.rad_Server_pvt.private_ip
-#  }
+  output "instance_ip_pvt" {
+ value = aws_spot_instance_request.rad_Server_pvt.private_ip
+  }
  
