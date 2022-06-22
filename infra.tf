@@ -95,10 +95,7 @@ resource "aws_route" "route_public" {
    subnet_id      = aws_subnet.private_subnet.id
    route_table_id = aws_route_table.pvt_RT.id
  }
- resource "aws_route" "route_private" {
-  route_table_id              = aws_route_table.pvt_RT.id
-  destination_cidr_block = "0.0.0.0/0"
-}
+
 
 #########security group#########
 resource "aws_security_group" "RadSG_terraform" {
