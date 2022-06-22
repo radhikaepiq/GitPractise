@@ -98,7 +98,6 @@ resource "aws_route" "route_public" {
  resource "aws_route" "route_private" {
   route_table_id              = aws_route_table.pvt_RT.id
   destination_cidr_block = "0.0.0.0/0"
-  gateway_id = aws_internet_gateway.Rad_IG.id
 }
 
 #########security group#########
