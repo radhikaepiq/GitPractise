@@ -1,7 +1,7 @@
 provider "aws" {
   region = "ap-south-1"
 }
-# # create vpc
+# # # create vpc
 
 resource "aws_vpc" "vpc_rad" {
 
@@ -156,3 +156,20 @@ resource "aws_spot_instance_request" "rad_Server_pub" {
  value = aws_spot_instance_request.rad_Server_pvt.private_ip
   }
  
+ ///s3 bucket creation with version control
+resource "aws_s3_bucket" "radterraformbucket" {
+  bucket = "radterraformbucket"
+}
+
+resource "aws_s3_bucket_acl" "radbucketacl" {
+  bucket = aws_s3_bucket.radterraformbucket.id
+  acl    = "public-read"
+}
+
+resource "aws_s3_bucket_versioning" "radterraformbuckversioning" {
+  bucket = aws_s3_bucket.radterraformbucket.id
+  versioning_configuration {
+    status = "Enabled"
+  }
+}
+
