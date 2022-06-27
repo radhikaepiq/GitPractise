@@ -138,7 +138,8 @@ resource "aws_spot_instance_request" "rad_Server_pub" {
 # #Private subnet and instance 2
 
  resource "aws_spot_instance_request" "rad_Server_pvt" {
- ami = "ami-079b5e5b3971bd10d"
+ //ami = "ami-079b5e5b3971bd10d"
+   ami =  "ami-0bb2d072924ebcb07"
  spot_price             = "0.03"
  instance_type          = "t2.micro"
  spot_type              = "one-time"
